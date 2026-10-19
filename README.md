@@ -1,47 +1,27 @@
 # Ho Universal Render Pipeline Config 17.0.3
 
-这个包是 Hollow 本地 URP 系统使用的配置包。它提供 URP shader 配置常量，并把这些常量同时生成到 C# 和 HLSL。
+Ho 渲染体系的 URP Shader 配置包，与 HoUrp17.3.0 配套使用。
 
-## 在整套系统里的定位
+## 功能
 
-`HoUrpConfig17.0.3` 与 `HoUrp17.3.0` 配套使用。
+- **灯光上限配置**：定义低端移动、移动 / WebGPU 与桌面平台的最大可见灯光数。
+- **雾计算配置**：控制雾关键字是否采用动态分支。
+- **跨语言配置同步**：由 C# 配置源生成 HLSL 常量，供 URP 运行时与 Shader 共用。
 
-当前定义的 URP shader 选项包括：
+配置源见 [ShaderConfig.cs](Runtime/ShaderConfig.cs)。
 
-- 低端移动平台最大可见灯光数：`16`
-- 移动平台 / WebGPU 最大可见灯光数：`32`
-- 桌面平台最大可见灯光数：`256`
-- 是否把 fog keyword 切换成动态分支：`0`
+## Ho 渲染体系相关仓库
 
-这些值会进入 URP shader 编译路径，因此会影响整套 Unity 项目的 shader variant 和运行时灯光上限。
+| 仓库 | 用途 |
+| --- | --- |
+| [HoTools](https://github.com/HollowAmeChan/HoTools) | Blender 角色、模型、贴图、动画与自动化工具 |
+| [HoGLTF](https://github.com/HollowAmeChan/HoGLTF) | Blender glTF 导出与 Ho 材质契约桥接 |
+| [HoUrp17.3.0](https://github.com/HollowAmeChan/HoUrp17.3.0) | URP 渲染基座 |
+| [lilToon](https://github.com/HollowAmeChan/lilToon) | 角色 / NPR 着色器 |
+| [lilToon-URP-Extensions](https://github.com/HollowAmeChan/lilToon-URP-Extensions) | 光照、阴影、反射与后处理扩展 |
+| [lilToon-UnityGLTF-Extensions](https://github.com/HollowAmeChan/lilToon-UnityGLTF-Extensions) | glTF 材质契约导入 |
+| [HoUnityTools](https://github.com/HollowAmeChan/HoUnityTools) | 角色、动画与创作工具 |
 
-## 重要文件
+## 可选材质合集
 
-- `Runtime/ShaderConfig.cs`：带 `[GenerateHLSL]` 的 C# 配置源。
-- `Runtime/ShaderConfig.cs.hlsl`：自动生成的 HLSL include。
-- `Runtime/Unity.RenderPipelines.Universal.Config.Runtime.asmdef`：runtime 程序集定义。
-- `Tests/Editor/ConfigurationTest.cs`：编辑器侧配置验证。
-- `Documentation~/`：Unity package 文档入口。
-
-## 安装
-
-通常与本地 URP 包一起使用：
-
-```json
-{
-  "dependencies": {
-    "com.unity.render-pipelines.universal": "file:D:/Unity_Fork/HoUrp17.3.0",
-    "com.unity.render-pipelines.universal-config": "file:D:/Unity_Fork/HoUrpConfig17.0.3"
-  }
-}
-```
-
-## 重新生成 shader include
-
-不要手改 `Runtime/ShaderConfig.cs.hlsl`。需要改配置时，先改 `Runtime/ShaderConfig.cs`，然后在 Unity 中执行：
-
-```text
-Edit > Rendering > Generate Shader Includes
-```
-
-提交时应同时提交 C# 源文件和重新生成的 HLSL 文件。
+- [HoShader](https://github.com/HollowAmeChan/HoShader)：宝石、皮肤、绒毛等独立材质与 Shader 实验合集，按需选用。
